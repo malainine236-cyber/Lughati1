@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lughati — Learn Arabic with AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --t:#C7522A;--g:#D4A853;--d:#1A1208;--ink:#2D1F0A;
+  --cr:#FBF6EA;--du:#E8D9B8;--sa:#F5EED9;--sg:#4A6741;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--cr);color:var(--ink);overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(251,246,234,.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(212,168,83,.2);padding:.85rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Amiri',serif;font-size:1.9rem;color:var(--t);cursor:pointer;line-height:1;text-decoration:none}
+.nav-r{display:flex;align-items:center;gap:.6rem}
+.btn{padding:.55rem 1rem;border-radius:6px;border:none;font-family:'DM Sans',sans-serif;font-size:.83rem;font-weight:600;cursor:pointer;transition:all .2s;display:inline-block}
+.bt{background:var(--t);color:#fff}.bt:hover{background:#a33e1a}
+.bo{background:transparent;border:1.5px solid rgba(45,31,10,.2);color:var(--ink)}.bo:hover{border-color:var(--t);color:var(--t)}
+.bg{background:var(--g);color:var(--d)}.bg:hover{background:#c49a40}
+.bdg{padding:.22rem .65rem;border-radius:20px;font-size:.7rem;font-weight:700;text-transform:uppercase;background:var(--g);color:var(--d)}
+
+/* PAGES */
+.pg{display:none;padding-top:62px;min-height:100vh}.pg.on{display:block}
+
+/* OVERLAY / MODAL */
+.ov{position:fixed;inset:0;background:rgba(26,18,8,.8);z-index:300;display:none;align-items:center;justify-content:center;padding:1rem}
+.ov.on{display:flex}
+.md{background:var(--cr);border-radius:16px;padding:2rem;width:100%;max-width:420px;position:relative;border:1px solid rgba(212,168,83,.2);box-shadow:0 40px 80px rgba(0,0,0,.3)}
+.mc{position:absolute;top:.8rem;right:.8rem;background:none;border:none;font-size:1.6rem;cursor:pointer;opacity:.4;line-height:1;font-family:sans-serif}
+.ml{font-family:'Amiri',serif;font-size:2rem;color:var(--t);text-align:center;display:block;margin-bottom:.2rem}
+.mtt{font-family:'DM Serif Display',serif;font-size:1.55rem;text-align:center;margin-bottom:.2rem;color:var(--d)}
+.ms{font-size:.82rem;text-align:center;opacity:.5;margin-bottom:1.4rem;line-height:1.5}
+.fg{margin-bottom:.9rem}
+.fg label{display:block;font-size:.78rem;font-weight:600;margin-bottom:.3rem;color:var(--ink)}
+.fi{width:100%;padding:.7rem .9rem;border:1.5px solid rgba(45,31,10,.18);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--ink);background:#fff;outline:none;transition:border-color .2s}
+.fi:focus{border-color:var(--t)}
+.bf{width:100%;padding:.85rem;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:.93rem;font-weight:600;cursor:pointer;border:none;background:var(--t);color:#fff;margin-top:.4rem;transition:background .2s}
+.bf:hover{background:#a33e1a}
+.sw{text-align:center;margin-top:.9rem;font-size:.82rem;opacity:.6}
+.sw a{color:var(--t);cursor:pointer;font-weight:600}
+.em{color:#e53e3e;font-size:.77rem;margin-top:.25rem;display:none}
+
+/* LANDING HERO */
+.hero{padding:3rem 1.4rem 2.5rem;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'ع';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Amiri',serif;font-size:80vw;color:var(--t);opacity:.03;pointer-events:none;line-height:1}
+.htg{display:inline-flex;align-items:center;gap:.4rem;background:rgba(212,168,83,.15);border:1px solid rgba(212,168,83,.4);color:var(--g);font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.3rem .8rem;border-radius:3px;margin-bottom:1.5rem;position:relative}
+.htg::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--g);animation:blink 1.5s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2.4rem,8vw,4rem);line-height:1.08;margin-bottom:.6rem;color:var(--d);position:relative}
+.hero h1 em{font-style:italic;color:var(--t)}
+.har{font-family:'Amiri',serif;font-size:clamp(1.4rem,5vw,2rem);color:var(--t);direction:rtl;margin-bottom:1rem;opacity:.9;position:relative}
+.hsb{font-size:.95rem;line-height:1.75;opacity:.62;margin-bottom:2rem;max-width:400px;margin-left:auto;margin-right:auto;position:relative}
+.hb{display:flex;flex-direction:column;gap:.75rem;max-width:300px;margin:0 auto 2.5rem;position:relative}
+.hst{display:flex;justify-content:center;gap:0;position:relative}
+.hsc{flex:1;text-align:center;padding:1.25rem .5rem;background:#fff;border:1px solid rgba(212,168,83,.15)}
+.hsc:first-child{border-radius:10px 0 0 10px}
+.hsc:last-child{border-radius:0 10px 10px 0}
+.hsn{font-family:'DM Serif Display',serif;font-size:1.7rem;color:var(--d)}
+.hsl{font-size:.7rem;opacity:.45;margin-top:.1rem}
+
+/* DEMO CHAT */
+.demo-wrap{padding:2rem 1.4rem}
+.demo-lbl{font-size:.68rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--t);text-align:center;margin-bottom:.5rem;display:flex;align-items:center;justify-content:center;gap:.4rem}
+.demo-lbl::before,.demo-lbl::after{content:'';flex:1;height:1px;background:rgba(199,82,42,.2)}
+.demo-box{background:var(--d);border-radius:16px;overflow:hidden;box-shadow:0 24px 60px rgba(26,18,8,.2)}
+.dh{padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;border-bottom:1px solid rgba(255,255,255,.07)}
+.dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.dhn{font-weight:600;color:var(--sa);font-size:.87rem}
+.dhs{font-size:.7rem;color:var(--g);opacity:.7}
+.msgs{padding:1.2rem;display:flex;flex-direction:column;gap:.9rem;min-height:200px;max-height:300px;overflow-y:auto}
+.msgs::-webkit-scrollbar{width:3px}
+.msgs::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}
+.msg{display:flex;gap:.55rem;align-items:flex-start}
+.msg.u{flex-direction:row-reverse}
+.av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0}
+.ai-av{background:var(--t);color:#fff;font-family:'Amiri',serif;font-size:.95rem}
+.u-av{background:rgba(255,255,255,.15);color:rgba(255,255,255,.8);font-size:.7rem}
+.bbl{max-width:82%;padding:.7rem .9rem;border-radius:10px 10px 10px 2px;font-size:.83rem;line-height:1.6;background:rgba(255,255,255,.09);color:rgba(245,238,217,.88)}
+.msg.u .bbl{background:var(--t);color:#fff;border-radius:10px 10px 2px 10px}
+.typing-dots span{width:6px;height:6px;border-radius:50%;background:rgba(245,238,217,.3);display:inline-block;margin:0 2px;animation:td 1.2s infinite}
+.typing-dots span:nth-child(2){animation-delay:.2s}
+.typing-dots span:nth-child(3){animation-delay:.4s}
+@keyframes td{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}}
+.cinp{display:flex;gap:.6rem;padding:.85rem 1.1rem;background:rgba(0,0,0,.25);border-top:1px solid rgba(255,255,255,.07)}
+.ci{flex:1;background:rgba(255,255,255,.09);border:1.5px solid rgba(255,255,255,.1);border-radius:7px;padding:.6rem .85rem;color:var(--sa);font-family:'DM Sans',sans-serif;font-size:.83rem;outline:none}
+.ci::placeholder{color:rgba(245,238,217,.3)}
+.ci:focus{border-color:rgba(212,168,83,.45)}
+.cs{background:var(--t);color:#fff;border:none;border-radius:7px;padding:.6rem 1.1rem;font-size:.83rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:background .2s}
+.cs:hover{background:#a33e1a}
+.cs:disabled{opacity:.4;cursor:not-allowed}
+
+/* SECTIONS */
+.sec{padding:3rem 1.4rem}
+.stg{font-size:.68rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--t);margin-bottom:.65rem;display:flex;align-items:center;gap:.4rem}
+.stg::before{content:'';width:16px;height:2px;background:var(--t)}
+.sec h2{font-family:'DM Serif Display',serif;font-size:clamp(1.8rem,5vw,2.8rem);line-height:1.1;margin-bottom:.4rem;color:var(--d)}
+.sec h2 em{font-style:italic;color:var(--t)}
+.ssb{font-size:.88rem;opacity:.58;line-height:1.7;margin-bottom:2rem}
+
+/* FEATURES */
+.feat-bg{background:var(--d)}
+.feat-bg .stg{color:var(--g)}.feat-bg .stg::before{background:var(--g)}
+.feat-bg h2{color:var(--sa)}.feat-bg .ssb{color:rgba(245,238,217,.48)}
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:.85rem}
+.fc{background:rgba(255,255,255,.06);border-radius:11px;padding:1.2rem;border:1px solid rgba(212,168,83,.12);transition:background .25s}
+.fc:hover{background:rgba(255,255,255,.1)}
+.fi2{font-size:1.4rem;margin-bottom:.55rem}
+.ft{font-weight:700;font-size:.88rem;margin-bottom:.3rem;color:var(--sa)}
+.fd{font-size:.78rem;color:rgba(245,238,217,.42);line-height:1.55}
+
+/* HOW IT WORKS */
+.steps{display:flex;flex-direction:column;gap:1.25rem}
+.step{display:flex;gap:1rem;align-items:flex-start}
+.sn{width:36px;height:36px;border-radius:50%;background:var(--t);color:#fff;font-family:'DM Serif Display',serif;font-size:1.1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.1rem}
+.st{font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--d);margin-bottom:.25rem}
+.sd{font-size:.85rem;opacity:.58;line-height:1.6}
+
+/* TESTIMONIALS */
+.tc{display:flex;flex-direction:column;gap:.9rem}
+.tcard{background:#fff;border-radius:12px;padding:1.4rem;border:1px solid rgba(212,168,83,.12);box-shadow:0 2px 12px rgba(26,18,8,.06)}
+.sts{color:var(--g);font-size:.85rem;letter-spacing:2px;margin-bottom:.65rem}
+.tx{font-size:.85rem;line-height:1.7;opacity:.7;margin-bottom:1rem;font-style:italic}
+.ta{display:flex;align-items:center;gap:.6rem}
+.tav{width:36px;height:36px;border-radius:50%;background:var(--du);display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;color:var(--t);font-size:1rem;flex-shrink:0;font-weight:700}
+.tn{font-weight:700;font-size:.85rem;color:var(--d)}
+.tl{font-size:.73rem;opacity:.42}
+
+/* PRICING */
+.pc{display:flex;flex-direction:column;gap:1rem}
+.pcard{background:#fff;border-radius:14px;padding:1.75rem;border:1.5px solid rgba(45,31,10,.1);position:relative;transition:all .25s}
+.pcard:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(199,82,42,.1);border-color:var(--t)}
+.pcard.feat{background:var(--d);border-color:var(--g)}
+.pcard.feat:hover{box-shadow:0 16px 40px rgba(212,168,83,.2)}
+.pb{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--g);color:var(--d);font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:.22rem .75rem;border-radius:3px;white-space:nowrap}
+.pn{font-family:'DM Serif Display',serif;font-size:1.3rem;margin-bottom:.3rem;color:var(--d)}
+.feat .pn{color:var(--sa)}
+.pd{font-size:.8rem;opacity:.48;margin-bottom:1.1rem;line-height:1.5}
+.feat .pd{color:rgba(245,238,217,.42)}
+.pp{display:flex;align-items:baseline;gap:.15rem;margin-bottom:1.25rem}
+.ppr{font-family:'DM Serif Display',serif;font-size:2.5rem;color:var(--t);line-height:1}
+.feat .ppr{color:var(--g)}
+.ppe{font-size:.78rem;opacity:.4}
+.feat .ppe{color:rgba(245,238,217,.32)}
+.pf{list-style:none;display:flex;flex-direction:column;gap:.55rem;margin-bottom:1.4rem}
+.pf li{font-size:.83rem;display:flex;align-items:center;gap:.5rem;color:var(--ink);opacity:.85}
+.feat .pf li{color:var(--sa)}
+.pf li::before{content:'✓';width:16px;height:16px;background:rgba(199,82,42,.1);color:var(--t);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:800;flex-shrink:0}
+.feat .pf li::before{background:rgba(212,168,83,.15);color:var(--g)}
+
+/* CTA */
+.cta{background:linear-gradient(135deg,var(--t),#8b2a10);padding:3rem 1.4rem;text-align:center;position:relative;overflow:hidden}
+.cta::before{content:'تعلم';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Amiri',serif;font-size:60vw;color:rgba(255,255,255,.05);pointer-events:none;white-space:nowrap}
+.cta h2{font-family:'DM Serif Display',serif;font-size:clamp(1.9rem,5vw,3rem);color:#fff;margin-bottom:.65rem;position:relative}
+.cta p{color:rgba(255,255,255,.7);margin-bottom:1.75rem;position:relative;font-size:.95rem}
+.bw{background:#fff;color:var(--t);padding:.9rem 2rem;border:none;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:800;cursor:pointer;position:relative;transition:all .2s;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+.bw:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,0,0,.25)}
+
+/* FOOTER */
+footer{background:var(--d);padding:2.5rem 1.4rem;color:rgba(245,238,217,.45)}
+.fl{font-family:'Amiri',serif;font-size:2rem;color:var(--g);display:block;margin-bottom:.35rem}
+.ft2{font-size:.82rem;line-height:1.6;margin-bottom:1.25rem}
+.fls{display:flex;flex-wrap:wrap;gap:.65rem;margin-bottom:1.25rem}
+.fls a{color:rgba(245,238,217,.38);text-decoration:none;font-size:.8rem;cursor:pointer;transition:color .2s}
+.fls a:hover{color:var(--g)}
+.fb{font-size:.73rem;border-top:1px solid rgba(255,255,255,.06);padding-top:1.1rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem}
+
+/* DASHBOARD */
+.dp{display:none;padding-top:62px;min-height:100vh;background:var(--cr)}.dp.on{display:block}
+.dts{display:flex;border-bottom:2px solid rgba(45,31,10,.07);background:#fff;overflow-x:auto;position:sticky;top:62px;z-index:50;-webkit-overflow-scrolling:touch}
+.dts::-webkit-scrollbar{display:none}
+.dt{padding:.8rem 1rem;font-size:.8rem;font-weight:600;color:rgba(45,31,10,.4);cursor:pointer;white-space:nowrap;border-bottom:2.5px solid transparent;margin-bottom:-2px;background:none;border-top:none;border-left:none;border-right:none;font-family:'DM Sans',sans-serif;flex-shrink:0;transition:all .2s}
+.dt.on{color:var(--t);border-bottom-color:var(--t)}
+.dc{padding:1.4rem}
+.dtc{display:none}.dtc.on{display:block}
+
+/* DASHBOARD HOME */
+.wc{background:linear-gradient(135deg,var(--t),#8b2a10);border-radius:14px;padding:1.5rem;color:#fff;margin-bottom:1.1rem;position:relative;overflow:hidden}
+.wc::after{content:'🔥';position:absolute;right:-1.5rem;top:-1rem;font-size:7rem;opacity:.1;line-height:1;pointer-events:none}
+.wn{font-family:'DM Serif Display',serif;font-size:1.55rem;margin-bottom:.2rem}
+.wd2{font-size:.8rem;opacity:.68;margin-bottom:.9rem}
+.wds{display:flex;gap:.45rem}
+.dd{width:26px;height:26px;border-radius:50%;border:2px solid rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:.63rem;font-weight:600;color:rgba(255,255,255,.4)}
+.dd.dn{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.5);color:#fff}
+.dd.dy{background:#fff;color:var(--t);border-color:#fff}
+.sr{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.7rem;margin-bottom:1.1rem}
+.sc{background:#fff;border-radius:11px;padding:.9rem;text-align:center;border:1px solid rgba(212,168,83,.1)}
+.si{font-size:1.15rem;margin-bottom:.2rem}
+.sv{font-family:'DM Serif Display',serif;font-size:1.5rem;color:var(--d)}
+.sm{font-size:.68rem;opacity:.4;margin-top:.08rem}
+.tc2{background:#fff;border-radius:12px;padding:1.4rem;border:1px solid rgba(212,168,83,.1)}
+.tt2{font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:.85rem;color:var(--d)}
+
+/* LESSON ROWS */
+.lr{display:flex;align-items:center;gap:.8rem;padding:.82rem;background:var(--cr);border-radius:9px;margin-bottom:.6rem;cursor:pointer;border:1.5px solid transparent;transition:all .2s}
+.lr:hover,.lr:active{border-color:rgba(199,82,42,.25);background:var(--du)}
+.li2{width:33px;height:33px;border-radius:8px;background:rgba(199,82,42,.1);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+.ln{font-weight:600;font-size:.85rem;color:var(--d)}
+.lm{font-size:.73rem;opacity:.42;margin-top:.08rem}
+.ls2{font-size:.73rem;font-weight:700;color:var(--t)}
+
+/* DASHBOARD CHAT */
+.cw{background:#fff;border-radius:12px;border:1px solid rgba(212,168,83,.12);overflow:hidden}
+.ch{background:var(--d);padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem}
+.cn{font-weight:600;color:var(--sa);font-size:.87rem}
+.csu{font-size:.7rem;color:var(--g);opacity:.7}
+.cms{padding:1.2rem;display:flex;flex-direction:column;gap:.9rem;min-height:240px;max-height:340px;overflow-y:auto;background:var(--cr)}
+.cms::-webkit-scrollbar{width:3px}
+.cms::-webkit-scrollbar-thumb{background:rgba(45,31,10,.1);border-radius:2px}
+.dm-msg .bbl{background:#fff;color:var(--ink);border:1px solid rgba(45,31,10,.07)}
+.dm-msg.msg.u .bbl{background:var(--t);color:#fff;border-color:transparent}
+.da-av{background:var(--t);color:#fff;font-family:'Amiri',serif;font-size:.95rem}
+.du-av{background:var(--du);color:var(--ink);font-size:.7rem}
+.dci{display:flex;gap:.6rem;padding:.82rem 1rem;background:#f5f2ee;border-top:1px solid rgba(45,31,10,.07)}
+.dci .ci{background:#fff;color:var(--ink);border-color:rgba(45,31,10,.13)}
+.dci .ci:focus{border-color:var(--t)}
+.dci .cs{background:var(--t)}
+.lb{display:none;background:rgba(199,82,42,.07);border:1px solid rgba(199,82,42,.2);border-radius:8px;padding:.9rem;margin-bottom:.9rem;font-size:.83rem;color:var(--t);line-height:1.5}
+.lb a{font-weight:700;cursor:pointer;text-decoration:underline}
+
+/* VOCAB */
+.vg{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.vc{background:#fff;border-radius:11px;padding:1.1rem;text-align:center;cursor:pointer;border:1.5px solid rgba(212,168,83,.1);transition:all .2s;min-height:95px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.vc:hover,.vc:active{border-color:var(--t);background:rgba(199,82,42,.03)}
+.va{font-family:'Amiri',serif;font-size:1.8rem;color:var(--t);direction:rtl;display:block;margin-bottom:.35rem}
+.ve{font-weight:700;font-size:.88rem;color:var(--d)}
+.vtr{font-style:italic;font-size:.72rem;opacity:.4;margin-top:.12rem}
+.vh{font-size:.7rem;opacity:.28;margin-top:.3rem}
+
+/* LESSON VIEW */
+.lvsec{background:#fff;border-radius:12px;padding:1.25rem;margin-bottom:.9rem;border:1px solid rgba(212,168,83,.1)}
+.lvh{font-family:'DM Serif Display',serif;font-size:1.05rem;margin-bottom:.7rem;color:var(--d)}
+.vi{background:var(--cr);border-radius:8px;padding:.82rem .95rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem;cursor:pointer;border:1.5px solid transparent;transition:all .2s}
+.vi:hover{border-color:rgba(199,82,42,.2)}
+.viar{font-family:'Amiri',serif;font-size:1.35rem;color:var(--t);direction:rtl}
+.vier{font-weight:700;font-size:.85rem;text-align:right}
+.vitr{font-size:.72rem;opacity:.38;font-style:italic;text-align:right}
+.qb{background:#fff;border-radius:12px;padding:1.25rem;border:1px solid rgba(212,168,83,.1)}
+.qp{font-size:.82rem;opacity:.48;text-align:center;margin-bottom:.4rem}
+.qq{font-family:'Amiri',serif;font-size:2.5rem;color:var(--t);direction:rtl;text-align:center;margin:1rem 0 1.4rem;display:block}
+.qo{display:grid;grid-template-columns:1fr 1fr;gap:.65rem}
+.qop{padding:.85rem;border:2px solid rgba(45,31,10,.1);border-radius:9px;cursor:pointer;font-size:.85rem;text-align:center;background:#fff;font-family:'DM Sans',sans-serif;transition:all .2s;font-weight:500}
+.qop:hover,.qop:active{border-color:var(--t);color:var(--t)}
+.qop.ok{border-color:var(--sg);background:rgba(74,103,65,.07);color:var(--sg)}
+.qop.no{border-color:#e53e3e;background:rgba(229,62,62,.05);color:#e53e3e}
+
+/* SETTINGS */
+.scs{display:flex;flex-direction:column;gap:.9rem}
+.scard{background:#fff;border-radius:12px;padding:1.4rem;border:1px solid rgba(212,168,83,.1)}
+.stt{font-family:'DM Serif Display',serif;font-size:1.05rem;margin-bottom:.9rem;color:var(--d)}
+.srow{display:flex;align-items:center;justify-content:space-between;padding:.8rem 0;border-bottom:1px solid rgba(45,31,10,.06)}
+.srow:last-child{border-bottom:none;padding-bottom:0}
+.sl{font-size:.85rem;font-weight:600;color:var(--d)}
+.ss{font-size:.73rem;opacity:.4;margin-top:.08rem}
+.tgl{width:40px;height:22px;background:rgba(45,31,10,.13);border-radius:11px;position:relative;cursor:pointer;transition:background .3s;flex-shrink:0}
+.tgl.on{background:var(--t)}
+.tgl::after{content:'';position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .3s;box-shadow:0 1px 3px rgba(0,0,0,.18)}
+.tgl.on::after{transform:translateX(18px)}
+
+/* UPGRADE MODAL */
+.umd{background:var(--d);border-radius:16px;padding:2rem;width:100%;max-width:420px;border:1px solid rgba(212,168,83,.2);box-shadow:0 40px 80px rgba(0,0,0,.4)}
+.utt{font-family:'DM Serif Display',serif;font-size:1.8rem;color:var(--sa);text-align:center;margin-bottom:.3rem}
+.uss{font-size:.83rem;color:rgba(245,238,217,.42);text-align:center;margin-bottom:1.4rem}
+.uf{list-style:none;margin-bottom:1.4rem}
+.uf li{display:flex;align-items:center;gap:.6rem;font-size:.85rem;color:rgba(245,238,217,.72);padding:.48rem 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.uf li::before{content:'✦';color:var(--g);font-size:.68rem;flex-shrink:0}
+.up{text-align:center;margin-bottom:1.4rem}
+.upn{font-family:'DM Serif Display',serif;font-size:2.8rem;color:var(--g);line-height:1}
+.upe{font-size:.82rem;color:rgba(245,238,217,.3)}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--d);color:var(--sa);padding:.8rem 1.4rem;border-radius:9px;font-size:.83rem;font-weight:500;z-index:500;opacity:0;transition:all .35s;border:1px solid rgba(212,168,83,.2);white-space:nowrap;max-width:90vw;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.toast.on{transform:translateX(-50%) translateY(0);opacity:1}
+
+/* SPINNER */
+.sp{width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:inline-block;vertical-align:middle;margin-right:.35rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* BACK BTN */
+.bk{display:inline-flex;align-items:center;gap:.4rem;font-size:.8rem;opacity:.48;cursor:pointer;margin-bottom:1.1rem;background:none;border:none;color:var(--ink);font-family:'DM Sans',sans-serif;padding:0;font-weight:600}
+.bk:hover{opacity:.8;color:var(--t)}
+.lvtl{font-family:'DM Serif Display',serif;font-size:1.55rem;color:var(--d);margin-bottom:.2rem}
+.lvar{font-family:'Amiri',serif;font-size:1.25rem;color:var(--t);direction:rtl;margin-bottom:1.25rem;display:block}
+
+/* RESPONSIVE */
+@media(min-width:600px){
+  .fg2{grid-template-columns:repeat(3,1fr)}
+  .pc{flex-direction:row}.pcard{flex:1}
+  .tc{flex-direction:row}.tcard{flex:1}
+  .vg{grid-template-columns:repeat(3,1fr)}
+  .steps{flex-direction:row}
+  .step{flex-direction:column;align-items:center;text-align:center}
+}
+@media(min-width:900px){
+  .hero{padding:4rem 4rem 3rem}
+  .hb{flex-direction:row;max-width:none;justify-content:center}
+  .sec{padding:4rem}
+  .dc{padding:2rem}
+}
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" onclick="goHome()">لغتي</a>
+  <div class="nav-r" id="ng">
+    <button class="btn bo" onclick="openAuth('login')">Sign In</button>
+    <button class="btn bt" onclick="openAuth('signup')">Start Free</button>
+  </div>
+  <div class="nav-r" id="nu" style="display:none">
+    <span class="bdg" id="npln">Free</span>
+    <span style="font-size:.82rem;font-weight:600;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" id="nnm"></span>
+    <button class="btn bo" style="padding:.42rem .75rem;font-size:.78rem" onclick="signOut()">Sign Out</button>
+  </div>
+</nav>
+
+<!-- AUTH MODAL -->
+<div class="ov" id="aov">
+  <div class="md">
+    <button class="mc" onclick="closeAuth()">×</button>
+    <span class="ml">لغتي</span>
+    <!-- LOGIN -->
+    <div id="lf">
+      <div class="mtt">Welcome back</div>
+      <div class="ms">Sign in and continue your Arabic journey</div>
+      <div class="fg"><label>Email</label><input class="fi" id="le" type="email" placeholder="you@example.com" autocomplete="email"></div>
+      <div class="fg"><label>Password</label><input class="fi" id="lp" type="password" placeholder="Your password" autocomplete="current-password"></div>
+      <div class="em" id="lerr"></div>
+      <button class="bf" id="lbtn" onclick="doLogin()">Sign In</button>
+      <div class="sw">No account? <a onclick="swAuth('signup')">Create one free →</a></div>
+    </div>
+    <!-- SIGNUP -->
+    <div id="sf" style="display:none">
+      <div class="mtt">Start learning free</div>
+      <div class="ms">Join 12,000+ Arabic learners — no credit card needed</div>
+      <div class="fg"><label>Your Name</label><input class="fi" id="sn" type="text" placeholder="Mohamed" autocomplete="name"></div>
+      <div class="fg"><label>Email</label><input class="fi" id="se" type="email" placeholder="you@example.com" autocomplete="email"></div>
+      <div class="fg"><label>Password</label><input class="fi" id="sp" type="password" placeholder="Choose a password (min 6 characters)" autocomplete="new-password"></div>
+      <div class="em" id="serr"></div>
+      <button class="bf" id="sbtn" onclick="doSignup()">Create My Free Account</button>
+      <div class="sw">Have an account? <a onclick="swAuth('login')">Sign in →</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- UPGRADE MODAL -->
+<div class="ov" id="uov">
+  <div class="umd">
+    <button class="mc" style="color:rgba(245,238,217,.4)" onclick="closeUp()">×</button>
+    <div class="utt">Go <em style="color:var(--g)">Pro</em></div>
+    <div class="uss">Unlock unlimited Arabic learning today</div>
+    <ul class="uf">
+      <li>Unlimited AI tutor conversations</li>
+      <li>All 300+ lessons across 6 dialects</li>
+      <li>Real-time pronunciation scoring</li>
+      <li>Adaptive AI learning engine</li>
+      <li>CEFR level certificates</li>
+      <li>Priority AI response speed</li>
+    </ul>
+    <div class="up">
+      <div class="upn">$19</div>
+      <div class="upe">per month · cancel anytime</div>
+    </div>
+    <button class="bf" onclick="window.open('https://paypal.me/MohamedLughati/19','_blank');closeUp();">Pay $19 via PayPal — Get Pro →</button>
+    <div style="text-align:center;margin-top:.9rem">
+      <a style="color:var(--g);font-size:.82rem;cursor:pointer" onclick="window.open('https://paypal.me/MohamedLughati/149','_blank');closeUp();">Or get Lifetime access — Pay $149 via PayPal →</a>
+    </div>
+    <p style="text-align:center;font-size:.7rem;color:rgba(245,238,217,.2);margin-top:.9rem">Secure payment · Cancel anytime · Instant access</p>
+  </div>
+</div>
+
+<!-- ===== LANDING PAGE ===== -->
+<div class="pg on" id="lpg">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="htg">✦ AI-Powered Arabic Tutor</div>
+    <h1>Speak Arabic<br><em>Fluently</em>, Faster</h1>
+    <div class="har">مرحباً، كيف حالك؟</div>
+    <p class="hsb">Your personal AI tutor adapts to your pace, explains grammar in plain language, and makes you conversational in weeks — not years.</p>
+    <div class="hb">
+      <button class="btn bt" style="padding:.9rem 1.75rem;font-size:.95rem;font-weight:700" onclick="openAuth('signup')">Start Learning Free →</button>
+      <button class="btn bo" style="padding:.9rem 1.75rem;font-size:.95rem" onclick="scrollDemo()">▶ Try AI Tutor Now</button>
+    </div>
+    <div class="hst">
+      <div class="hsc"><div class="hsn">12K+</div><div class="hsl">Active Learners</div></div>
+      <div class="hsc"><div class="hsn">4.9★</div><div class="hsl">App Rating</div></div>
+      <div class="hsc"><div class="hsn">6 Wks</div><div class="hsl">To Conversational</div></div>
+    </div>
+  </div>
+
+  <!-- LIVE AI DEMO -->
+  <div class="demo-wrap" id="demosec">
+    <div class="demo-lbl">Try the AI Tutor Live — No Signup Needed</div>
+    <div class="demo-box">
+      <div class="dh">
+        <div class="dot"></div>
+        <div><div class="dhn">Lughati AI Tutor</div><div class="dhs">Arabic Expert · Online Now</div></div>
+      </div>
+      <div class="msgs" id="lm">
+        <div class="msg">
+          <div class="av ai-av">ل</div>
+          <div class="bbl">مرحباً! 👋 I'm your Arabic tutor. Ask me anything — how to say something, grammar rules, pronunciation tips, or just practice chatting in Arabic!</div>
+        </div>
+        <div class="msg">
+          <div class="av ai-av">ل</div>
+          <div class="bbl">💡 Try asking: <em>"How do I say I love you in Arabic?"</em></div>
+        </div>
+      </div>
+      <div class="cinp">
+        <input class="ci" id="li" placeholder="Ask anything about Arabic..." onkeydown="if(event.key==='Enter')sendL()">
+        <button class="cs" id="ls" onclick="sendL()">Send →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="sec feat-bg">
+    <div style="max-width:900px;margin:0 auto">
+      <div class="stg" style="color:var(--g)"><span style="width:16px;height:2px;background:var(--g);display:inline-block"></span>Why Lughati</div>
+      <h2 style="color:var(--sa)">Everything you need to<br><em>master Arabic</em></h2>
+      <p class="ssb" style="color:rgba(245,238,217,.48)">The most complete AI Arabic learning experience — for all levels and all dialects.</p>
+      <div class="fg2">
+        <div class="fc"><div class="fi2">🤖</div><div class="ft">AI Conversation Partner</div><div class="fd">Chat naturally with AI that responds like a native. Get instant corrections and explanations.</div></div>
+        <div class="fc"><div class="fi2">🎙️</div><div class="ft">Pronunciation Coach</div><div class="fd">Real-time scoring for challenging sounds like ع، خ، غ that trip up every beginner.</div></div>
+        <div class="fc"><div class="fi2">📖</div><div class="ft">300+ Lessons</div><div class="fd">From alphabet to advanced grammar. AI adapts to your weak spots automatically.</div></div>
+        <div class="fc"><div class="fi2">🌍</div><div class="ft">6 Dialects + MSA</div><div class="fd">Egyptian, Levantine, Gulf, Moroccan, Iraqi, and Modern Standard Arabic.</div></div>
+        <div class="fc"><div class="fi2">🔤</div><div class="ft">Script Mastery</div><div class="fd">Learn to read and write Arabic right-to-left with interactive drills.</div></div>
+        <div class="fc"><div class="fi2">📊</div><div class="ft">Progress Analytics</div><div class="fd">Track vocabulary size, accuracy, streaks and your CEFR level from A1 to C2.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="sec" style="background:var(--sa)">
+    <div style="max-width:900px;margin:0 auto">
+      <div class="stg">How it Works</div>
+      <h2>From zero to <em>fluent</em> in 6 weeks</h2>
+      <p class="ssb">Our AI learning loop gets you speaking Arabic faster than any other method.</p>
+      <div class="steps">
+        <div class="step"><div class="sn">1</div><div><div class="st">Choose Your Goal</div><div class="sd">Travel, business, Quran, or conversational fluency — we build your perfect curriculum.</div></div></div>
+        <div class="step"><div class="sn">2</div><div><div class="st">Daily AI Lessons</div><div class="sd">15-minute focused sessions using spaced repetition and active recall for fast retention.</div></div></div>
+        <div class="step"><div class="sn">3</div><div><div class="st">Chat & Practice</div><div class="sd">Use the AI tutor for real conversation. Every mistake becomes a lesson instantly.</div></div></div>
+        <div class="step"><div class="sn">4</div><div><div class="st">Achieve Fluency</div><div class="sd">Earn CEFR certificates and watch your level rise from A1 to B2 and beyond.</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TESTIMONIALS -->
+  <div class="sec">
+    <div style="max-width:900px;margin:0 auto">
+      <div class="stg">Student Reviews</div>
+      <h2>Learners who found their <em>Arabic voice</em></h2>
+      <p class="ssb">Real stories from real learners around the world.</p>
+      <div class="tc">
+        <div class="tcard"><div class="sts">★★★★★</div><p class="tx">"I tried Duolingo, Rosetta Stone, and countless YouTube channels for 3 years. Lughati's AI tutor is the first thing that actually made Arabic click for me. The grammar explanations are genuinely magical."</p><div class="ta"><div class="tav">S</div><div><div class="tn">Sarah M.</div><div class="tl">Toronto, Canada</div></div></div></div>
+        <div class="tcard"><div class="sts">★★★★★</div><p class="tx">"My wife's family only speaks Arabic. After just 3 months with Lughati I had my first real conversation with my mother-in-law. She cried. I cried. Best investment I've ever made."</p><div class="ta"><div class="tav">J</div><div><div class="tn">James K.</div><div class="tl">London, UK</div></div></div></div>
+        <div class="tcard"><div class="sts">★★★★★</div><p class="tx">"I'm learning Quranic Arabic and the AI perfectly explains classical grammar in context. It understands religious texts — something absolutely no other app comes close to doing."</p><div class="ta"><div class="tav">A</div><div><div class="tn">Aisha R.</div><div class="tl">Dubai, UAE</div></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRICING -->
+  <div class="sec" style="background:var(--sa)" id="prsec">
+    <div style="max-width:900px;margin:0 auto">
+      <div class="stg">Pricing</div>
+      <h2>Simple, honest <em>pricing</em></h2>
+      <p class="ssb">Start completely free. Upgrade when you're ready to accelerate.</p>
+      <div class="pc">
+        <div class="pcard">
+          <div class="pn">Free</div>
+          <div class="pd">Perfect to experience the AI tutor and beginner lessons.</div>
+          <div class="pp"><div class="ppr" style="color:var(--sg)">$0</div><div class="ppe">/month</div></div>
+          <ul class="pf"><li>10 AI tutor messages per day</li><li>20 beginner lessons</li><li>Vocabulary trainer</li><li>Arabic script basics</li></ul>
+          <button class="btn bo" style="width:100%;padding:.8rem" onclick="openAuth('signup')">Start Free Now</button>
+        </div>
+        <div class="pcard feat">
+          <div class="pb">Most Popular</div>
+          <div class="pn">Pro</div>
+          <div class="pd">Unlimited AI + full curriculum for serious learners.</div>
+          <div class="pp"><div class="ppr">$19</div><div class="ppe">/month</div></div>
+          <ul class="pf"><li>Unlimited AI messages</li><li>All 300+ lessons</li><li>All 6 dialects</li><li>Pronunciation scoring</li><li>Progress dashboard</li><li>CEFR certificates</li></ul>
+          <button class="btn bg" style="width:100%;padding:.8rem;font-weight:800" onclick="window.open('https://paypal.me/MohamedLughati/19','_blank')">Pay $19 via PayPal →</button>
+        </div>
+        <div class="pcard">
+          <div class="pn">Lifetime</div>
+          <div class="pd">Pay once, learn Arabic forever. Best value.</div>
+          <div class="pp"><div class="ppr">$149</div><div class="ppe">once</div></div>
+          <ul class="pf"><li>Everything in Pro</li><li>All future content updates</li><li>Family sharing (3 seats)</li><li>Offline mode</li><li>Priority support</li></ul>
+          <button class="btn bo" style="width:100%;padding:.8rem" onclick="window.open('https://paypal.me/MohamedLughati/149','_blank')">Pay $149 via PayPal →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta">
+    <h2>Start your Arabic journey today</h2>
+    <p>No credit card required. Join 12,000+ learners worldwide.</p>
+    <button class="bw" onclick="openAuth('signup')">Create Free Account → It's Free</button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div style="max-width:900px;margin:0 auto">
+      <span class="fl">لغتي</span>
+      <p class="ft2">The most natural way to learn Arabic — powered by AI, designed for humans. From alphabet to fluency.</p>
+      <div class="fls">
+        <a onclick="scrollDemo()">Try Demo</a>
+        <a onclick="document.getElementById('prsec').scrollIntoView({behavior:'smooth'})">Pricing</a>
+        <a>About Us</a>
+        <a>Blog</a>
+        <a>Privacy Policy</a>
+        <a>Terms of Service</a>
+      </div>
+      <div class="fb">
+        <span>© 2026 Lughati. All rights reserved.</span>
+        <span style="font-family:'Amiri',serif;color:var(--g);font-size:1.1rem">لغتي — Your Language</span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ===== DASHBOARD PAGE ===== -->
+<div class="dp" id="dpg">
+  <div class="dts">
+    <button class="dt on" onclick="swTab('home',this)">🏠 Home</button>
+    <button class="dt" onclick="swTab('lessons',this)">📚 Lessons</button>
+    <button class="dt" onclick="swTab('tutor',this)">🤖 AI Tutor</button>
+    <button class="dt" onclick="swTab('vocab',this)">🔤 Vocab</button>
+    <button class="dt" onclick="swTab('settings',this)">⚙️ Settings</button>
+  </div>
+  <div class="dc">
+
+    <!-- HOME TAB -->
+    <div class="dtc on" id="tab-home">
+      <div class="wc">
+        <div class="wn" id="wname">مرحباً! 👋</div>
+        <div class="wd2" id="wdate"></div>
+        <div class="wds" id="wdots"></div>
+      </div>
+      <div class="sr">
+        <div class="sc"><div class="si">🔥</div><div class="sv" id="ss">1</div><div class="sm">Day Streak</div></div>
+        <div class="sc"><div class="si">💬</div><div class="sv" id="sml">10</div><div class="sm">AI Left</div></div>
+        <div class="sc"><div class="si">📖</div><div class="sv" id="sw">0</div><div class="sm">Words</div></div>
+      </div>
+      <div class="tc2">
+        <div class="tt2">Today's Lessons</div>
+        <div id="tl"></div>
+        <button class="btn bt" style="width:100%;padding:.78rem;margin-top:.5rem" onclick="swTab('lessons',document.querySelectorAll('.dt')[1])">View All 300+ Lessons →</button>
+      </div>
+    </div>
+
+    <!-- LESSONS TAB -->
+    <div class="dtc" id="tab-lessons">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.5rem;margin-bottom:.25rem;color:var(--d)">All Lessons</div>
+      <div style="font-size:.82rem;opacity:.45;margin-bottom:1.1rem">Complete Arabic curriculum — beginner to advanced</div>
+      <div id="al"></div>
+    </div>
+
+    <!-- AI TUTOR TAB -->
+    <div class="dtc" id="tab-tutor">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.5rem;margin-bottom:.25rem;color:var(--d)">AI Tutor</div>
+      <div style="font-size:.82rem;opacity:.45;margin-bottom:1rem">Your personal Arabic expert — ask anything</div>
+      <div class="lb" id="lb">⚡ You have used all 10 free messages today. <a onclick="openUp()">Upgrade to Pro for unlimited →</a></div>
+      <div class="cw">
+        <div class="ch">
+          <div class="dot"></div>
+          <div style="flex:1"><div class="cn">Lughati AI</div><div class="csu" id="mr">10 / 10 messages remaining</div></div>
+        </div>
+        <div class="cms" id="dm">
+          <div class="msg dm-msg">
+            <div class="av da-av">ل</div>
+            <div class="bbl">أهلاً وسهلاً! 🌟 I'm your personal Arabic tutor. What would you like to learn or practice today? I can help with vocabulary, grammar, dialects, pronunciation, or just have a conversation!</div>
+          </div>
+        </div>
+        <div class="dci">
+          <input class="ci" id="di" placeholder="Ask anything in Arabic or English..." onkeydown="if(event.key==='Enter')sendD()">
+          <button class="cs" id="ds" onclick="sendD()">Send →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- VOCAB TAB -->
+    <div class="dtc" id="tab-vocab">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.5rem;margin-bottom:.25rem;color:var(--d)">Vocabulary Trainer</div>
+      <div style="font-size:.82rem;opacity:.45;margin-bottom:1.1rem">Tap each card to reveal the translation</div>
+      <div class="vg" id="vg"></div>
+    </div>
+
+    <!-- SETTINGS TAB -->
+    <div class="dtc" id="tab-settings">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.5rem;margin-bottom:1.1rem;color:var(--d)">Settings</div>
+      <div class="scs">
+        <div class="scard">
+          <div class="stt">My Account</div>
+          <div class="srow"><div><div class="sl">Name</div><div class="ss" id="stnm">—</div></div></div>
+          <div class="srow"><div><div class="sl">Email</div><div class="ss" id="stem">—</div></div></div>
+          <div class="srow"><div><div class="sl">Plan</div><div class="ss" id="stpl">Free — 10 AI messages/day</div></div><button class="btn bt" style="padding:.4rem .85rem;font-size:.78rem" onclick="openUp()">Upgrade</button></div>
+        </div>
+        <div class="scard">
+          <div class="stt">Preferences</div>
+          <div class="srow"><div><div class="sl">Daily Reminder</div><div class="ss">Notify me to practice every day</div></div><div class="tgl on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="srow"><div><div class="sl">Show Arabic Script</div><div class="ss">Display Arabic alongside English</div></div><div class="tgl on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="srow"><div><div class="sl">Sound Effects</div><div class="ss">Audio feedback on correct answers</div></div><div class="tgl" onclick="this.classList.toggle('on')"></div></div>
+        </div>
+        <div class="scard" style="text-align:center">
+          <div class="stt" style="text-align:left">Subscription</div>
+          <div style="font-family:'Amiri',serif;font-size:2.5rem;color:var(--t);margin-bottom:.35rem">لغتي</div>
+          <div style="font-family:'DM Serif Display',serif;font-size:1.3rem;margin-bottom:.25rem" id="stpld">Free Plan</div>
+          <div style="font-size:.8rem;opacity:.42;margin-bottom:1.25rem">10 AI messages per day</div>
+          <button class="btn bt" style="padding:.75rem 1.5rem;font-size:.9rem" onclick="openUp()">Upgrade to Pro →</button>
+        </div>
+        <div class="scard">
+          <div class="stt">Account Actions</div>
+          <div class="srow">
+            <div><div class="sl">Sign Out</div><div class="ss">Log out of your Lughati account</div></div>
+            <button class="btn bo" style="padding:.42rem .85rem;font-size:.78rem" onclick="signOut()">Sign Out</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// CONFIG
+var GKEY='AIzaSyBVXrhaLUjUBZ3PIolFxn6wNgyYaa9IcVM';
+var GURL='https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key='+GKEY;
+var SYS='You are Lughati, a warm and expert Arabic language tutor. Rules: 1) Always include Arabic script, romanized transliteration, and English translation. 2) Be encouraging, friendly, and detailed in your explanations. 3) Format vocabulary as: Arabic (romanization) = English meaning. 4) Praise users when they write in Arabic. 5) Include fun cultural facts when relevant. 6) Remember context from earlier in the conversation. 7) If asked for a full conversation, provide a complete dialogue with multiple exchanges. 8) For long conversations, show the full back-and-forth dialogue with Arabic and English side by side.';
+
+// Conversation history for context memory
+var landingHistory = [];
+var dashHistory = [];
+
+// STATE
+var user=null, plan='free', msgsLeft=10, words=0;
+
+// LOCAL STORAGE HELPERS
+function saveU(u){try{localStorage.setItem('lg_u',JSON.stringify(u));}catch(e){}}
+function loadU(){try{var x=localStorage.getItem('lg_u');return x?JSON.parse(x):null;}catch(e){return null;}}
+function getDB(){try{var x=localStorage.getItem('lg_db');return x?JSON.parse(x):{};}catch(e){return{};}}
+function saveDB(d){try{localStorage.setItem('lg_db',JSON.stringify(d));}catch(e){}}
+
+// LESSON DATA
+var LESSONS=[
+  {id:1,t:'Greetings & Introductions',ar:'التحيات والتعريف',lv:'Beginner',ico:'👋',prog:40,open:true},
+  {id:2,t:'Numbers & Counting',ar:'الأرقام والعد',lv:'Beginner',ico:'🔢',prog:0,open:true},
+  {id:3,t:'Colors & Descriptions',ar:'الألوان والأوصاف',lv:'Beginner',ico:'🎨',prog:0,open:true},
+  {id:4,t:'Family & Relationships',ar:'الأسرة والعلاقات',lv:'Intermediate',ico:'👨‍👩‍👧',prog:0,open:false},
+  {id:5,t:'Food & Dining',ar:'الطعام والمطاعم',lv:'Intermediate',ico:'🍽️',prog:0,open:false},
+  {id:6,t:'Travel & Directions',ar:'السفر والاتجاهات',lv:'Intermediate',ico:'✈️',prog:0,open:false},
+  {id:7,t:'Work & Business',ar:'العمل والأعمال',lv:'Advanced',ico:'💼',prog:0,open:false},
+  {id:8,t:'Arabic Literature',ar:'الأدب العربي',lv:'Advanced',ico:'📜',prog:0,open:false}
+];
+
+var LV={
+  1:[{ar:'مرحباً',en:'Hello',tr:'mar-haban'},{ar:'أهلاً',en:'Hi / Welcome',tr:'ahlan'},{ar:'كيف حالك؟',en:'How are you?',tr:'kayfa haluk?'},{ar:'بخير',en:'Fine / Good',tr:'bikhair'},{ar:'مع السلامة',en:'Goodbye',tr:'maa as-salama'}],
+  2:[
+    {ar:'واحد',en:'1 — One',tr:'wa-hid'},
+    {ar:'اثنان',en:'2 — Two',tr:'ith-nayn'},
+    {ar:'ثلاثة',en:'3 — Three',tr:'tha-la-tha'},
+    {ar:'أربعة',en:'4 — Four',tr:'ar-ba-a'},
+    {ar:'خمسة',en:'5 — Five',tr:'kham-sa'},
+    {ar:'ستة',en:'6 — Six',tr:'sit-ta'},
+    {ar:'سبعة',en:'7 — Seven',tr:'sab-a'},
+    {ar:'ثمانية',en:'8 — Eight',tr:'tha-ma-ni-ya'},
+    {ar:'تسعة',en:'9 — Nine',tr:'tis-a'},
+    {ar:'عشرة',en:'10 — Ten',tr:'ash-a-ra'},
+    {ar:'أحد عشر',en:'11 — Eleven',tr:'a-had a-shar'},
+    {ar:'اثنا عشر',en:'12 — Twelve',tr:'ith-na a-shar'},
+    {ar:'ثلاثة عشر',en:'13 — Thirteen',tr:'tha-la-tha-ta a-shar'},
+    {ar:'أربعة عشر',en:'14 — Fourteen',tr:'ar-ba-a-ta a-shar'},
+    {ar:'خمسة عشر',en:'15 — Fifteen',tr:'kham-sa-ta a-shar'},
+    {ar:'ستة عشر',en:'16 — Sixteen',tr:'sit-ta-ta a-shar'},
+    {ar:'سبعة عشر',en:'17 — Seventeen',tr:'sab-a-ta a-shar'},
+    {ar:'ثمانية عشر',en:'18 — Eighteen',tr:'tha-ma-ni-ya-ta a-shar'},
+    {ar:'تسعة عشر',en:'19 — Nineteen',tr:'tis-a-ta a-shar'},
+    {ar:'عشرون',en:'20 — Twenty',tr:'ish-run'},
+    {ar:'واحد وعشرون',en:'21 — Twenty-one',tr:'wa-hid wa-ish-run'},
+    {ar:'اثنان وعشرون',en:'22 — Twenty-two',tr:'ith-nayn wa-ish-run'},
+    {ar:'ثلاثة وعشرون',en:'23 — Twenty-three',tr:'tha-la-tha wa-ish-run'},
+    {ar:'أربعة وعشرون',en:'24 — Twenty-four',tr:'ar-ba-a wa-ish-run'},
+    {ar:'خمسة وعشرون',en:'25 — Twenty-five',tr:'kham-sa wa-ish-run'},
+    {ar:'ستة وعشرون',en:'26 — Twenty-six',tr:'sit-ta wa-ish-run'},
+    {ar:'سبعة وعشرون',en:'27 — Twenty-seven',tr:'sab-a wa-ish-run'},
+    {ar:'ثمانية وعشرون',en:'28 — Twenty-eight',tr:'tha-ma-ni-ya wa-ish-run'},
+    {ar:'تسعة وعشرون',en:'29 — Twenty-nine',tr:'tis-a wa-ish-run'},
+    {ar:'ثلاثون',en:'30 — Thirty',tr:'tha-la-thun'},
+    {ar:'أربعون',en:'40 — Forty',tr:'ar-ba-un'},
+    {ar:'خمسون',en:'50 — Fifty',tr:'kham-sun'},
+    {ar:'ستون',en:'60 — Sixty',tr:'sit-tun'},
+    {ar:'سبعون',en:'70 — Seventy',tr:'sab-un'},
+    {ar:'ثمانون',en:'80 — Eighty',tr:'tha-ma-nun'},
+    {ar:'تسعون',en:'90 — Ninety',tr:'tis-un'},
+    {ar:'مائة',en:'100 — One Hundred',tr:'mi-ya'},
+    {ar:'١',en:'Arabic: 1',tr:'wahid'},
+    {ar:'٢',en:'Arabic: 2',tr:'ithnayn'},
+    {ar:'٣',en:'Arabic: 3',tr:'thalatha'},
+    {ar:'٤',en:'Arabic: 4',tr:'arbaa'},
+    {ar:'٥',en:'Arabic: 5',tr:'khamsa'},
+    {ar:'٦',en:'Arabic: 6',tr:'sitta'},
+    {ar:'٧',en:'Arabic: 7',tr:'sabaa'},
+    {ar:'٨',en:'Arabic: 8',tr:'thamaniya'},
+    {ar:'٩',en:'Arabic: 9',tr:'tisaa'},
+    {ar:'١٠',en:'Arabic: 10',tr:'ashara'},
+    {ar:'١٠٠',en:'Arabic: 100',tr:'miya'}
+  ],
+  3:[{ar:'أحمر',en:'Red',tr:'ahmar'},{ar:'أزرق',en:'Blue',tr:'azraq'},{ar:'أخضر',en:'Green',tr:'akhdar'},{ar:'أصفر',en:'Yellow',tr:'asfar'},{ar:'أبيض',en:'White',tr:'abyad'}]
+};
+
+var VOCAB=[
+  {ar:'مرحباً',en:'Hello',tr:'mar-haban'},
+  {ar:'شكراً',en:'Thank you',tr:'shukran'},
+  {ar:'من فضلك',en:'Please',tr:'min fadlik'},
+  {ar:'نعم',en:'Yes',tr:'naam'},
+  {ar:'لا',en:'No',tr:'la'},
+  {ar:'أحبك',en:'I love you',tr:'uhibbuk'},
+  {ar:'ماء',en:'Water',tr:'maa'},
+  {ar:'طعام',en:'Food',tr:'taam'},
+  {ar:'بيت',en:'House',tr:'bayt'},
+  {ar:'كتاب',en:'Book',tr:'kitab'},
+  {ar:'صديق',en:'Friend',tr:'sadiq'},
+  {ar:'مدرسة',en:'School',tr:'madrasa'}
+];
+
+// INIT
+window.addEventListener('load',function(){
+  var saved=loadU();
+  if(saved){user=saved;onIn(saved);}
+  initDate();
+  initDots();
+  renderToday();
+  renderAll();
+  renderVocab();
+});
+
+function initDate(){
+  var d=new Date();
+  document.getElementById('wdate').textContent=d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+}
+
+function initDots(){
+  var days=['M','T','W','T','F','S','S'];
+  var today=(new Date().getDay()+6)%7;
+  var h='';
+  for(var i=0;i<7;i++){
+    var c=i<today?'dn':i===today?'dy':'';
+    h+='<div class="dd '+c+'">'+days[i]+'</div>';
+  }
+  document.getElementById('wdots').innerHTML=h;
+}
+
+// AUTH
+function openAuth(m){
+  document.getElementById('aov').classList.add('on');
+  swAuth(m);
+}
+function closeAuth(){
+  document.getElementById('aov').classList.remove('on');
+}
+function swAuth(m){
+  document.getElementById('lf').style.display=m==='login'?'block':'none';
+  document.getElementById('sf').style.display=m==='signup'?'block':'none';
+}
+
+function doLogin(){
+  var e=document.getElementById('le').value.trim();
+  var p=document.getElementById('lp').value;
+  if(!e){showErr('lerr','Please enter your email');return;}
+  if(!p){showErr('lerr','Please enter your password');return;}
+  var b=document.getElementById('lbtn');
+  b.innerHTML='<span class="sp"></span>Signing in...';
+  b.disabled=true;
+  var db=getDB();
+  if(db[e]&&db[e].pass!==p){
+    showErr('lerr','Wrong password. Try again.');
+    b.innerHTML='Sign In';b.disabled=false;return;
+  }
+  var nm=db[e]?db[e].name:e.split('@')[0];
+  setTimeout(function(){
+    completeLogin(e,nm);
+    b.innerHTML='Sign In';b.disabled=false;
+  },600);
+}
+
+function doSignup(){
+  var n=document.getElementById('sn').value.trim();
+  var e=document.getElementById('se').value.trim();
+  var p=document.getElementById('sp').value;
+  if(!n){showErr('serr','Please enter your name');return;}
+  if(!e||e.indexOf('@')<0){showErr('serr','Please enter a valid email');return;}
+  if(!p||p.length<6){showErr('serr','Password must be at least 6 characters');return;}
+  var b=document.getElementById('sbtn');
+  b.innerHTML='<span class="sp"></span>Creating account...';
+  b.disabled=true;
+  var db=getDB();
+  db[e]={name:n,pass:p,joined:new Date().toISOString()};
+  saveDB(db);
+  setTimeout(function(){
+    completeLogin(e,n);
+    b.innerHTML='Create My Free Account';b.disabled=false;
+  },700);
+}
+
+function completeLogin(email,name){
+  var u={id:'u'+Date.now(),email:email,name:name};
+  saveU(u);
+  closeAuth();
+  onIn(u);
+  showToast('Welcome to Lughati, '+name+'! مرحباً بك 🎉');
+}
+
+function signOut(){
+  user=null;
+  try{localStorage.removeItem('lg_u');}catch(e){}
+  onOut();
+  goHome();
+  showToast('Signed out. Come back soon! مع السلامة 👋');
+}
+
+function onIn(u){
+  user=u;
+  var nm=u.name||u.email.split('@')[0]||'Learner';
+  document.getElementById('ng').style.display='none';
+  document.getElementById('nu').style.display='flex';
+  document.getElementById('nnm').textContent=nm;
+  document.getElementById('wname').textContent='مرحباً، '+nm+'! 👋';
+  document.getElementById('stnm').textContent=nm;
+  document.getElementById('stem').textContent=u.email||'';
+  showDash();
+}
+
+function onOut(){
+  document.getElementById('ng').style.display='flex';
+  document.getElementById('nu').style.display='none';
+}
+
+// NAVIGATION
+function goHome(){
+  document.getElementById('lpg').classList.add('on');
+  document.getElementById('dpg').classList.remove('on');
+  window.scrollTo(0,0);
+}
+function showDash(){
+  document.getElementById('lpg').classList.remove('on');
+  document.getElementById('dpg').classList.add('on');
+  window.scrollTo(0,0);
+}
+function scrollDemo(){
+  document.getElementById('demosec').scrollIntoView({behavior:'smooth'});
+}
+
+function swTab(nm,btn){
+  var tabs=document.querySelectorAll('.dtc');
+  for(var i=0;i<tabs.length;i++) tabs[i].classList.remove('on');
+  var btns=document.querySelectorAll('.dt');
+  for(var i=0;i<btns.length;i++) btns[i].classList.remove('on');
+  document.getElementById('tab-'+nm).classList.add('on');
+  btn.classList.add('on');
+}
+
+// RENDER LESSONS
+function renderToday(){
+  var h='';
+  for(var i=0;i<3;i++){
+    var l=LESSONS[i];
+    var st=l.prog>0?l.prog+'%':'Start →';
+    h+='<div class="lr" onclick="openLesson('+l.id+')">';
+    h+='<div class="li2">'+l.ico+'</div>';
+    h+='<div style="flex:1"><div class="ln">'+l.t+'</div><div class="lm">'+l.lv+' · '+l.ar+'</div></div>';
+    h+='<div class="ls2">'+st+'</div></div>';
+  }
+  document.getElementById('tl').innerHTML=h;
+}
+
+function renderAll(){
+  var h='';
+  for(var i=0;i<LESSONS.length;i++){
+    var l=LESSONS[i];
+    var act=l.open?'openLesson('+l.id+')':'openUp()';
+    var st=l.open?(l.prog>0?l.prog+'%':'Start →'):'🔒 Pro';
+    h+='<div class="lr" onclick="'+act+'">';
+    h+='<div class="li2">'+l.ico+'</div>';
+    h+='<div style="flex:1"><div class="ln">'+l.t+'</div><div class="lm">'+l.lv+' · '+l.ar+'</div></div>';
+    h+='<div class="ls2">'+st+'</div></div>';
+  }
+  document.getElementById('al').innerHTML=h;
+}
+
+function openLesson(id){
+  var l=null;
+  for(var i=0;i<LESSONS.length;i++){if(LESSONS[i].id===id){l=LESSONS[i];break;}}
+  if(!l)return;
+  // Always switch to Lessons tab
+  var tabs=document.querySelectorAll('.dtc');
+  for(var i=0;i<tabs.length;i++) tabs[i].classList.remove('on');
+  var btns=document.querySelectorAll('.dt');
+  for(var i=0;i<btns.length;i++) btns[i].classList.remove('on');
+  document.getElementById('tab-lessons').classList.add('on');
+  btns[1].classList.add('on');
+  window.scrollTo(0,62);
+  var vocab=LV[id]||LV[1];
+  var vh='';
+  for(var i=0;i<vocab.length;i++){
+    vh+='<div class="vi">';
+    vh+='<div class="viar">'+vocab[i].ar+'</div>';
+    vh+='<div><div class="vier">'+vocab[i].en+'</div><div class="vitr">'+vocab[i].tr+'</div></div>';
+    vh+='</div>';
+  }
+  var tab=document.getElementById('tab-lessons');
+  tab.innerHTML=
+    '<button class="bk" id="bbtn">← Back to All Lessons</button>'+
+    '<div class="lvtl">'+l.t+'</div>'+
+    '<span class="lvar">'+l.ar+'</span>'+
+    '<div class="lvsec"><div class="lvh">📚 Vocabulary</div><div>'+vh+'</div></div>'+
+    '<div class="qb"><div class="lvh">🎯 Quick Quiz</div>'+
+    '<div id="qa"><button class="btn bt" style="width:100%;padding:.85rem" onclick="loadQ('+id+')">Start Quiz →</button></div></div>';
+  document.getElementById('bbtn').onclick=function(){
+    tab.innerHTML='';renderAll();
+  };
+}
+
+function loadQ(lid){
+  var vocab=LV[lid]||LV[1];
+  var idx=Math.floor(Math.random()*vocab.length);
+  var q=vocab[idx];
+  var opts=[q.en];
+  for(var i=0;i<vocab.length;i++){
+    if(vocab[i].ar!==q.ar&&opts.length<4) opts.push(vocab[i].en);
+  }
+  // Shuffle
+  for(var i=opts.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var tmp=opts[i];opts[i]=opts[j];opts[j]=tmp;
+  }
+  var oh='';
+  for(var i=0;i<opts.length;i++){
+    oh+='<button class="qop" onclick="chkAns(this,\''+opts[i].replace(/'/g,"&#39;")+'\',\''+q.en.replace(/'/g,"&#39;")+'\','+lid+')">'+opts[i]+'</button>';
+  }
+  document.getElementById('qa').innerHTML=
+    '<div class="qp">What does this Arabic word mean?</div>'+
+    '<span class="qq">'+q.ar+'</span>'+
+    '<div class="qo">'+oh+'</div>';
+}
+
+function chkAns(el,chosen,correct,lid){
+  var opts=document.querySelectorAll('.qop');
+  for(var i=0;i<opts.length;i++) opts[i].onclick=null;
+  if(chosen===correct){
+    el.classList.add('ok');
+    showToast('Correct! صح ممتاز! 🎉');
+    words++;
+    document.getElementById('sw').textContent=words;
+  }else{
+    el.classList.add('no');
+    for(var i=0;i<opts.length;i++){
+      if(opts[i].textContent===correct) opts[i].classList.add('ok');
+    }
+    showToast('Not quite! Keep going 💪');
+  }
+  var nb=document.createElement('button');
+  nb.className='btn bt';
+  nb.style.cssText='width:100%;padding:.8rem;margin-top:1rem';
+  nb.textContent='Next Question →';
+  nb.onclick=function(){loadQ(lid);};
+  document.getElementById('qa').appendChild(nb);
+}
+
+// VOCAB FLASHCARDS
+function renderVocab(){
+  var h='';
+  for(var i=0;i<VOCAB.length;i++){
+    h+='<div class="vc" onclick="flipV('+i+')" id="vc'+i+'">';
+    h+='<span class="va">'+VOCAB[i].ar+'</span>';
+    h+='<div id="vr'+i+'" style="display:none">';
+    h+='<div class="ve">'+VOCAB[i].en+'</div>';
+    h+='<div class="vtr">'+VOCAB[i].tr+'</div></div>';
+    h+='<div class="vh" id="vh'+i+'">Tap to reveal</div>';
+    h+='</div>';
+  }
+  document.getElementById('vg').innerHTML=h;
+}
+
+function flipV(i){
+  var r=document.getElementById('vr'+i);
+  var h=document.getElementById('vh'+i);
+  if(r.style.display==='none'){
+    r.style.display='block';
+    h.style.display='none';
+    words++;
+    document.getElementById('sw').textContent=words;
+  }else{
+    r.style.display='none';
+    h.style.display='block';
+  }
+}
+
+// UPGRADE
+function openUp(){
+  if(!user){openAuth('signup');return;}
+  document.getElementById('uov').classList.add('on');
+}
+function closeUp(){
+  document.getElementById('uov').classList.remove('on');
+}
+
+// AI CHAT
+async function callAI(msg, history){
+  // Try Gemini REST API
+  try{
+    var contents = [];
+    if(history && history.length > 0){
+      for(var i=0; i<history.length; i++) contents.push(history[i]);
+    }
+    contents.push({role:'user', parts:[{text:msg}]});
+    
+    var res = await fetch(GURL, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        system_instruction: {parts:[{text:SYS}]},
+        contents: contents,
+        generationConfig: {maxOutputTokens:1500, temperature:0.75}
+      })
+    });
+    
+    if(!res.ok) throw new Error('API error: ' + res.status);
+    var data = await res.json();
+    
+    if(data.candidates && data.candidates[0] && data.candidates[0].content){
+      var reply = data.candidates[0].content.parts[0].text;
+      if(history !== null){
+        history.push({role:'user', parts:[{text:msg}]});
+        history.push({role:'model', parts:[{text:reply}]});
+        if(history.length > 20) history.splice(0,2);
+      }
+      return reply;
+    }
+    if(data.error) return 'API Error: ' + data.error.message + ' — Please check your Gemini key.';
+    return 'No response received. Please try again.';
+    
+  } catch(e) {
+    // Fallback smart responses when API unavailable
+    var q = msg.toLowerCase();
+    if(q.includes('hello') || q.includes('hi') || q.includes('marhaba') || q.includes('salam')){
+      return 'مرحباً (mar-HA-ban) = Hello\nأهلاً (AH-lan) = Hi / Welcome\nالسلام عليكم (as-sa-LA-mu a-LAY-kum) = Peace be upon you (Islamic greeting)\n\nTip: السلام عليكم is the most common greeting in Arab countries! 🌟';
+    } else if(q.includes('thank') || q.includes('shukran')){
+      return 'شكراً (SHUK-ran) = Thank you\nشكراً جزيلاً (SHUK-ran ja-ZEE-lan) = Thank you very much\nعفواً (AF-wan) = You are welcome\n\nTip: Always say شكراً after receiving help — Arabs love politeness! 😊';
+    } else if(q.includes('number') || q.includes('count')){
+      return 'Arabic numbers 1-10:\n١ واحد (WA-hid) = One\n٢ اثنان (ITH-nayn) = Two\n٣ ثلاثة (tha-LA-tha) = Three\n٤ أربعة (AR-ba-a) = Four\n٥ خمسة (KHAM-sa) = Five\n٦ ستة (SIT-ta) = Six\n٧ سبعة (SAB-a) = Seven\n٨ ثمانية (tha-MA-ni-ya) = Eight\n٩ تسعة (TIS-a) = Nine\n١٠ عشرة (ASH-a-ra) = Ten';
+    } else if(q.includes('love') || q.includes('uhibbuk')){
+      return 'أحبك (u-HIB-buk) = I love you (to a male)\nأحبكِ (u-HIB-buki) = I love you (to a female)\nأنا مغرم بك (a-NA mugh-RAM bik) = I am in love with you\n\nTip: Arabic has different forms for male and female — very important! 💕';
+    } else if(q.includes('food') || q.includes('eat') || q.includes('restaurant')){
+      return 'طعام (ta-AM) = Food\nماء (MA) = Water\nخبز (KHUBZ) = Bread\nأريد... (u-REE-du) = I want...\nالحساب من فضلك (al-hi-SAB min FAD-lak) = The bill please\n\nTip: Arab hospitality is famous — you will always be offered tea! 🍵';
+    } else if(q.includes('name') || q.includes('ism')){
+      return 'ما اسمك؟ (ma IS-muk?) = What is your name?\nاسمي... (IS-mi...) = My name is...\nتشرفنا (ta-SHAR-raf-na) = Nice to meet you\n\nExample: اسمي محمد (IS-mi Mu-HAM-mad) = My name is Mohamed 😊';
+    } else if(q.includes('where') || q.includes('ayn')){
+      return 'أين (AY-na) = Where\nهنا (HU-na) = Here\nهناك (HU-nak) = There\nأين الحمام؟ (AY-na al-ham-MAM?) = Where is the bathroom?\nأين المطعم؟ (AY-na al-MAT-am?) = Where is the restaurant?';
+    } else if(q.includes('good') || q.includes('morning') || q.includes('night')){
+      return 'صباح الخير (sa-BAH al-KHAYR) = Good morning\nصباح النور (sa-BAH an-NUR) = Good morning (reply)\nمساء الخير (ma-SA al-KHAYR) = Good evening\nتصبح على خير (tu-SBI-hu a-la KHAYR) = Good night\n\nTip: Arabs always reply to greetings with an even warmer response! 🌅';
+    } else {
+      return 'I am having trouble connecting to the AI right now. 📶\n\nHere are some things I can help you with — just type one:\n• "How to say hello"\n• "Numbers in Arabic"\n• "How to say thank you"\n• "How to say I love you"\n• "Food words in Arabic"\n• "What is your name in Arabic"\n\nOr check your internet connection and try again!';
+    }
+  }
+}
+
+// LANDING CHAT
+async function sendL(){
+  var inp=document.getElementById('li');
+  var btn=document.getElementById('ls');
+  var txt=inp.value.trim();
+  if(!txt)return;
+  inp.value='';
+  btn.disabled=true;
+  addMsg('lm',txt,true,false);
+  var tid=addTyping('lm',false);
+  var rep=await callAI(txt, landingHistory);
+  removeTyping(tid);
+  addMsg('lm',rep,false,false);
+  btn.disabled=false;
+  inp.focus();
+}
+
+// DASHBOARD CHAT
+async function sendD(){
+  if(plan==='free'&&msgsLeft<=0){
+    document.getElementById('lb').style.display='block';
+    showToast('Daily limit reached! Upgrade for unlimited 🚀');
+    return;
+  }
+  var inp=document.getElementById('di');
+  var btn=document.getElementById('ds');
+  var txt=inp.value.trim();
+  if(!txt)return;
+  inp.value='';
+  btn.disabled=true;
+  if(plan==='free'){
+    msgsLeft--;
+    document.getElementById('sml').textContent=msgsLeft;
+    document.getElementById('mr').textContent=msgsLeft+' / 10 messages remaining';
+    if(msgsLeft<=0) document.getElementById('lb').style.display='block';
+  }
+  addMsg('dm',txt,true,true);
+  var tid=addTyping('dm',true);
+  var rep=await callAI(txt, dashHistory);
+  removeTyping(tid);
+  addMsg('dm',rep,false,true);
+  btn.disabled=false;
+  inp.focus();
+}
+
+// CHAT HELPERS
+function addMsg(cid,txt,isUser,isDash){
+  var c=document.getElementById(cid);
+  var d=document.createElement('div');
+  d.className='msg dm-msg'+(isUser?' u':'');
+  var avCls=isDash?(isUser?'du-av':'da-av'):(isUser?'u-av':'ai-av');
+  var avTxt=isUser?'You':'ل';
+  var bblStyle='';
+  if(isDash&&!isUser) bblStyle='background:#fff;color:var(--ink);border:1px solid rgba(45,31,10,.07)';
+  var fmt=txt.replace(/\n/g,'<br>');
+  d.innerHTML='<div class="av '+avCls+'">'+avTxt+'</div><div class="bbl" style="'+bblStyle+'">'+(isUser?txt:fmt)+'</div>';
+  c.appendChild(d);
+  c.scrollTop=c.scrollHeight;
+}
+
+var tn=0;
+function addTyping(cid,isDash){
+  var id='tp'+(++tn);
+  var c=document.getElementById(cid);
+  var d=document.createElement('div');
+  d.className='msg dm-msg';
+  d.id=id;
+  var bblStyle=isDash?'background:#fff;border:1px solid rgba(45,31,10,.07)':'';
+  d.innerHTML='<div class="av '+(isDash?'da-av':'ai-av')+'">ل</div><div class="bbl typing-dots" style="'+bblStyle+'"><span></span><span></span><span></span></div>';
+  c.appendChild(d);
+  c.scrollTop=c.scrollHeight;
+  return id;
+}
+function removeTyping(id){
+  var e=document.getElementById(id);
+  if(e) e.remove();
+}
+
+// HELPERS
+function showErr(id,msg){
+  var el=document.getElementById(id);
+  el.textContent=msg;
+  el.style.display='block';
+  setTimeout(function(){el.style.display='none';},3500);
+}
+
+function showToast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('on');
+  setTimeout(function(){t.classList.remove('on');},3200);
+}
+</script>
+</body>
+</html>
